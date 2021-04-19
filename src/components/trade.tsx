@@ -12,12 +12,10 @@ interface Props {
 
 const Trade = (props: Props) => {
   const [query, setQuery] = React.useState('')
-  const [error, setError] = React.useState('')
   const [loading, setLoading] = React.useState(false)
 
   const resetQuery = () => {
     setQuery('')
-    setError('')
     setLoading(false)
   }
 
@@ -27,12 +25,11 @@ const Trade = (props: Props) => {
   
       if (command === "buy" || command === "sell") {
         if (props.symbol.price) {
-          const size = parseInt(args[0])
+          const size = parseInt(args[0].replace('k', '000'))
           positions.addPosition(command === "buy" ? "Buy" : "Sell", size, props.symbol)
           resetQuery()
         } else {
           setQuery("")
-          setError("Error - symbol price not yet set.")
         }
       }
       else if (command === "close") {
@@ -50,9 +47,7 @@ const Trade = (props: Props) => {
           .finally(() => {
             resetQuery()
           })
-          .catch(() => {
-            setError("Error loading next ticker. Try again.")
-          })
+          .catch(() => {})
       }
     }
   }
