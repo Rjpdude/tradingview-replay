@@ -17,6 +17,7 @@
     "typescript": "^4.2.4"
   },
   "dependencies": {
+    "dotenv": "^8.2.0",
     "ink": "^3.0.8",
     "ink-table": "^3.0.0",
     "ink-text-input": "^4.0.1",
