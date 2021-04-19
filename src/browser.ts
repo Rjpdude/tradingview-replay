@@ -53,6 +53,13 @@ const getCurrentPrice = async () => {
 			.maximize();
 
 		await driver.get('https://www.tradingview.com/#signin')
+		await (await driver.findElement(By.className('tv-signin-dialog__toggle-email'))).click()
+		const inputs = await driver.findElements(By.className('tv-signin-dialog__input'))
+		inputs[0].sendKeys(process.env.TV_USER)
+		inputs[1].sendKeys(process.env.TV_PASS)
+		await (await driver.findElement(By.className('tv-button--size_large'))).click()
+		await driver.sleep(1000)
+		await driver.get(process.env.TV_CHART_URL)
 	} catch (error) {
 		console.error('Error while running.\n', error);
 	}
