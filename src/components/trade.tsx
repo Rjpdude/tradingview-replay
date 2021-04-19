@@ -2,9 +2,9 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { symbol, Symbol } from '../reducers/symbol'
 import { positions } from '../reducers/positions'
-import { Text, Box } from 'ink'
+import { Text, Box, Newline } from 'ink'
 import TextInput from 'ink-text-input'
-import { nextTicker, configure } from '../browser'
+import { nextTicker } from '../browser'
 
 interface Props {
   symbol: Symbol
@@ -12,53 +12,59 @@ interface Props {
 
 const Trade = (props: Props) => {
   const [query, setQuery] = React.useState('')
+  const [error, setError] = React.useState('')
   const [loading, setLoading] = React.useState(false)
 
   const resetQuery = () => {
     setQuery('')
+    setError('')
+    setLoading(false)
   }
 
   const onSubmit = () => {
-    const [command, ...args] = query.split(" ")
-
-    if (command === "setup") {
-      setLoading(true)
-
-      configure(parseInt(args[0])).finally(() => {
-        resetQuery()
-        setLoading(false)
-      })
-    }
-    else if (command === "buy" || command === "sell") {
-      const size = parseInt(args[0])
-      positions.addPosition(command === "buy" ? "Buy" : "Sell", size, props.symbol)
-      resetQuery()
-    }
-    else if (command === "close") {
-      if (args[0] === "all") {
-        positions.closeAll()
-      } else {
-        positions.closePosition(parseInt(args[0]))
+    if (!loading) {
+      const [command, ...args] = query.split(" ")
+  
+      if (command === "buy" || command === "sell") {
+        if (props.symbol.price) {
+          const size = parseInt(args[0])
+          positions.addPosition(command === "buy" ? "Buy" : "Sell", size, props.symbol)
+          resetQuery()
+        } else {
+          setQuery("")
+          setError("Error - symbol price not yet set.")
+        }
       }
-      resetQuery()
-    }
-    else if (command === "") {
-      setLoading(true)
-
-      nextTicker().finally(() => {
-        setLoading(false)
-      })
+      else if (command === "close") {
+        if (args[0] === "all") {
+          positions.closeAll()
+        } else {
+          positions.closePosition(!args[0] ? undefined : parseInt(args[0]))
+        }
+        resetQuery()
+      }
+      else if (command === "") {
+        setLoading(true)
+  
+        nextTicker()
+          .finally(() => {
+            resetQuery()
+          })
+          .catch(() => {
+            setError("Error loading next ticker. Try again.")
+          })
+      }
     }
   }
 
   return (
-    <>
+    <Box>
       <Box marginRight={1}>
         <Text>{loading ? 'Loading...' : 'Command:'}</Text>
       </Box>
 
-      {!loading && <TextInput value={query} onChange={setQuery} onSubmit={onSubmit} />}
-    </>
+      <TextInput value={query} onChange={setQuery} onSubmit={onSubmit} />
+    </Box>
   )
 }
 

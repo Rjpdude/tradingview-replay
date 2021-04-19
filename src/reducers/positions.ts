@@ -38,10 +38,18 @@ export const positions = pod<Position[]>([])
     },
 
     closePosition: (id: number) => (positions) => {
-      const position = positions.find((position) => position.id === id)
-
-      if (position) {
-        position.closed = true
+      if (id === undefined) {
+        const openPositions = positions.filter(({ closed }) => !closed)
+        
+        if (openPositions.length === 1) {
+          openPositions[0].closed = true
+        }
+      } else {
+        const position = positions.find((position) => position.id === id)
+  
+        if (position) {
+          position.closed = true
+        }
       }
     },
 

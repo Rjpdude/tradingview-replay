@@ -8,8 +8,8 @@ export interface AccountState {
 }
 
 export const account = pod<AccountState>({
-  balance: '-',
-  equity: '-',
+  balance: '$0.00',
+  equity: '$0.00',
   pl: '-',
 })
 .track(positions, (positionsState) => (accountState) => {
