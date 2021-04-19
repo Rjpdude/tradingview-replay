@@ -17,8 +17,8 @@ const PositionsComponent = (props: Props) => {
     "P/L": p.pl
   }))
 
-  return props.positions.length > 0 && (
-    <Table data={data} />
+  return (
+    <Table columns={["Id", "Type", "Size", "Open", "Current", "P/L"]} data={data} />
   )
 }
 

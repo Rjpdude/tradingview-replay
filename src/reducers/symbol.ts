@@ -9,11 +9,11 @@ export interface Symbol {
 }
 
 export const symbol = pod<Symbol>({
-  name: 'EURUSD',
-  spread: 4,
-  price: '1.19743',
-  buy: '1.19745',
-  sell: '1.19741',
+  name: '',
+  spread: 0,
+  price: '',
+  buy: '',
+  sell: '',
 }).on({
   setName: (name: string) => (state) => {
     state.name = name

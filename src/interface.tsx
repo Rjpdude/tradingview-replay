@@ -1,14 +1,45 @@
 import React from 'react'
-import { render, Box } from 'ink'
+import { render, Box, Text } from 'ink'
 import { Provider } from 'react-redux'
 import { store } from './store'
+import { configure } from './browser'
 import Account from './components/account'
 import Positions from './components/positions'
 import Trade from './components/trade'
 
 const Interface = () => {
-  return (
+	const [waiting, setWaiting] = React.useState(true)
+	const [dots, setDots] = React.useState(1)
+	const [symbol, setSymbol] = React.useState("")
+
+	React.useEffect(() => {
+		const interval = setInterval(() => {
+			setDots(curDots => curDots === 4 ? 1 : curDots + 1)
+			configure().then((res) => {
+				if (res) {
+					setSymbol(res)
+					setWaiting(false)
+				}
+			})
+		}, 1000)
+
+		return () => clearInterval(interval)
+	}, [waiting])
+
+	const dotsOutput = React.useMemo(() => {
+		return ".".repeat(dots)
+	}, [dots])
+
+  return waiting ? (
+		<Text color="green" dimColor bold>Waiting for symbol initialization{dotsOutput}</Text>
+	) : (
 		<Provider store={store}>
+			<Box marginBottom={1}>
+				<Text color="green" dimColor bold>
+					Initialized symbol {symbol} successfully.
+				</Text>
+			</Box>
+
 			<Box marginBottom={1}>
 				<Account />
 			</Box>
