@@ -26,11 +26,11 @@ const Trade = (props: Props) => {
       if (command === "buy" || command === "sell") {
         if (props.symbol.price) {
           const size = parseInt(args[0].replace('k', '000'))
-          positions.addPosition(command === "buy" ? "Buy" : "Sell", size, props.symbol)
-          resetQuery()
-        } else {
-          setQuery("")
+          if (!isNaN(size)) {
+            positions.addPosition(command === "buy" ? "Buy" : "Sell", size, props.symbol)
+          }
         }
+        resetQuery()
       }
       else if (command === "close") {
         if (args[0] === "all") {
