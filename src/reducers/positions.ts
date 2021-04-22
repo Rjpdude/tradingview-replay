@@ -57,7 +57,9 @@ export const positions = pod<Position[]>([])
       positions.forEach((position) => {
         position.closed = true
       })
-    }
+    },
+
+    reset: () => () => []
   })
 
 const resolvePosition = (symbolState: Symbol, position: Position) => {

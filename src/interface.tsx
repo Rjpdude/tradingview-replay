@@ -11,6 +11,7 @@ const Interface = () => {
 	const [waiting, setWaiting] = React.useState(true)
 	const [dots, setDots] = React.useState(1)
 	const [symbol, setSymbol] = React.useState("")
+	const [viewMode, setViewMode] = React.useState(false)
 
 	React.useEffect(() => {
 		const interval = setInterval(() => {
@@ -44,12 +45,20 @@ const Interface = () => {
 				<Account />
 			</Box>
 			
+			{viewMode && (
+				<Box marginBottom={1}>
+					<Text color="orange" dimColor bold>
+						Position history:
+					</Text>
+				</Box>
+			)}
+
 			<Box marginBottom={1}>
-				<Positions />
+				<Positions viewMode={viewMode} />
 			</Box>
 
 			<Box>
-				<Trade />
+				<Trade setViewMode={setViewMode} />
 			</Box>
 		</Provider>
 	)

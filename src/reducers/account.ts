@@ -28,3 +28,10 @@ export const account = pod<AccountState>({
   accountState.pl = `${pl > 0 ? '+' : ''}$${pl.toFixed(2)}`
   accountState.equity = `$${(balance + pl).toFixed(2)}`
 })
+.on({
+  reset: () => (accountState) => {
+    accountState.balance = '$0.00'
+    accountState.equity = '$0.00'
+    accountState.pl = '-'
+  }
+})

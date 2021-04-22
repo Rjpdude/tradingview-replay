@@ -1,13 +1,15 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import { account } from '../reducers/account'
 import { symbol, Symbol } from '../reducers/symbol'
 import { positions } from '../reducers/positions'
-import { Text, Box, Newline } from 'ink'
+import { Text, Box } from 'ink'
 import TextInput from 'ink-text-input'
 import { nextTicker } from '../browser'
 
 interface Props {
   symbol: Symbol
+  setViewMode: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 const Trade = (props: Props) => {
@@ -38,6 +40,15 @@ const Trade = (props: Props) => {
         } else {
           positions.closePosition(!args[0] ? undefined : parseInt(args[0]))
         }
+        resetQuery()
+      }
+      else if (command === "reset") {
+        account.reset()
+        positions.reset()
+        resetQuery()
+      }
+      else if (command === "view") {
+        props.setViewMode(mode => !mode)
         resetQuery()
       }
       else if (command === "") {
