@@ -60,7 +60,5 @@ const getCurrentPrice = async () => {
 		await (await driver.findElement(By.className('tv-button--size_large'))).click()
 		await driver.sleep(1000)
 		await driver.get(process.env.TV_CHART_URL)
-	} catch (error) {
-		console.error('Error while running.\n', error);
-	}
+	} catch (error) {}
 })()
