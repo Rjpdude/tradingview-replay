@@ -67,5 +67,7 @@ export const account = pod<AccountState>({
     accountState.balance = '$0.00'
     accountState.equity = '$0.00'
     accountState.pl = '-'
+    accountState.biggestWin = 0
+    accountState.biggestLoss = 0
   }
 })
