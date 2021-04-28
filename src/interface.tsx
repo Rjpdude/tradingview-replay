@@ -4,6 +4,7 @@ import { Provider } from 'react-redux'
 import { store } from './store'
 import { configure } from './browser'
 import Account from './components/account'
+import Stats from './components/stats'
 import Positions from './components/positions'
 import Trade from './components/trade'
 
@@ -43,6 +44,10 @@ const Interface = () => {
 
 			<Box marginBottom={1}>
 				<Account />
+			</Box>
+
+			<Box marginBottom={1}>
+				<Stats />
 			</Box>
 			
 			{viewMode && (
